@@ -32,6 +32,7 @@
       );
 
       const renderer = new THREE.WebGLRenderer();
+      renderer.shadowMap.enabled = true;
       renderer.setSize(window.innerWidth, window.innerHeight);
       document.body.appendChild(renderer.domElement);
 
@@ -40,6 +41,7 @@
       const geometry = new THREE.BoxGeometry(1, 1, 1);
       const material = new THREE.MeshStandardMaterial({ color: 0x00ff00 });
       const cube = new THREE.Mesh(geometry, material);
+      cube.castShadow = true;
       scene.add(cube);
 
       const ground = new THREE.Mesh(
@@ -47,14 +49,15 @@
         new THREE.MeshStandardMaterial({ color: 0x0000ff })
       );
       ground.position.y = -2;
+      ground.receiveShadow = true;
       scene.add(ground);
 
-      
       camera.position.z = 5;
 
       const light = new THREE.DirectionalLight(0xffffff, 1);
       light.position.y = 3;
       light.position.z = 2;
+      light.castShadow = true;
       scene.add(light);
 
       function animate() {
