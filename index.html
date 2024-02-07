@@ -189,8 +189,24 @@
         }
       });
 
+      const enemy = new Box({
+        width: 1,
+        height: 1,
+        depth: 1,
+        position: {
+          x: 0,
+          y: -1.2,
+          z: -4,
+        },
+        velocity: { x: 0, y: 0, z: 0.005 },
+        color: "red",
+      });
+      enemy.castShadow = true;
+      scene.add(enemy);
+      const enemies = [enemy];
+
       function animate() {
-        requestAnimationFrame(animate);
+        const animationId = requestAnimationFrame(animate);
         renderer.render(scene, camera);
 
         // movement code
@@ -202,6 +218,13 @@
         else if (keys.w.pressed) cube.velocity.z = -0.05;
 
         cube.update(ground);
+        enemies.forEach((enemy) => {
+          enemy.update(ground);
+          if (boxCollision({ box1: cube, box2: enemy })) {
+            // window.cancelAnimationFrame(animationId)
+            cancelAnimationFrame(animationId)
+          }
+        });
         // cube.position.y += -0.01;
       }
       animate();
