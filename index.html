@@ -46,6 +46,7 @@
           color = "#00ff00",
           velocity = { x: 0, y: 0, z: 0 },
           position = { x: 0, y: 0, z: 0 },
+          zAcceleration = false,
         }) {
           super(
             new THREE.BoxGeometry(width, height, depth),
@@ -68,6 +69,8 @@
 
           this.velocity = velocity;
           this.gravity = -0.002;
+
+          this.zAcceleration = zAcceleration;
         }
 
         updateSides() {
@@ -83,6 +86,8 @@
 
         update(ground) {
           this.updateSides();
+
+          if (this.zAcceleration) this.velocity.z += 0.0001;
 
           this.position.x += this.velocity.x;
           this.position.z += this.velocity.z;
@@ -200,6 +205,7 @@
         },
         velocity: { x: 0, y: 0, z: 0.005 },
         color: "red",
+        zAcceleration: true,
       });
       enemy.castShadow = true;
       scene.add(enemy);
@@ -222,7 +228,7 @@
           enemy.update(ground);
           if (boxCollision({ box1: cube, box2: enemy })) {
             // window.cancelAnimationFrame(animationId)
-            cancelAnimationFrame(animationId)
+            cancelAnimationFrame(animationId);
           }
         });
         // cube.position.y += -0.01;
