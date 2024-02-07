@@ -87,31 +87,27 @@
           this.position.x += this.velocity.x;
           this.position.z += this.velocity.z;
 
-          // detect for collision
-          const zCollision =
-            this.front >= ground.back && this.back <= ground.front;
-          const xCollision =
-            this.right >= ground.left && this.left <= ground.right;
-          const yCollision =
-            this.bottom <= ground.top && this.top >= ground.bottom;
-          if (zCollision && xCollision && yCollision) {
-            console.log("collision");
-          }
-
-          this.applyGravity();
+          this.applyGravity(ground);
         }
-        applyGravity() {
+        applyGravity(ground) {
           this.velocity.y += this.gravity;
 
           // Hitting the ground
-          if (this.bottom + this.velocity.y <= ground.top) {
+          if (boxCollision({ box1: this, box2: ground })) {
             this.velocity.y *= 0.8;
             this.velocity.y = -this.velocity.y;
           } else this.position.y += this.velocity.y;
         }
       }
 
-      
+      function boxCollision({ box1, box2 }) {
+        const zCollision = box1.front >= box2.back && box1.back <= box2.front;
+        const xCollision = box1.right >= box2.left && box1.left <= box2.right;
+        const yCollision =
+          box1.bottom + box1.velocity.y <= box2.top && box1.top >= box2.bottom;
+        return xCollision && yCollision && zCollision;
+      }
+
       const cube = new Box({
         width: 1,
         height: 1,
@@ -200,10 +196,10 @@
         // movement code
         cube.velocity.x = 0;
         cube.velocity.z = 0;
-        if (keys.a.pressed) cube.velocity.x = -0.01;
-        else if (keys.d.pressed) cube.velocity.x = 0.01;
-        if (keys.s.pressed) cube.velocity.z = 0.01;
-        else if (keys.w.pressed) cube.velocity.z = -0.01;
+        if (keys.a.pressed) cube.velocity.x = -0.05;
+        else if (keys.d.pressed) cube.velocity.x = 0.05;
+        if (keys.s.pressed) cube.velocity.z = 0.05;
+        else if (keys.w.pressed) cube.velocity.z = -0.05;
 
         cube.update(ground);
         // cube.position.y += -0.01;
