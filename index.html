@@ -220,8 +220,17 @@
         // movement code
         cube.velocity.x = 0;
         cube.velocity.z = 0;
-        if (keys.a.pressed) cube.velocity.x = -0.05;
-        else if (keys.d.pressed) cube.velocity.x = 0.05;
+        if (keys.a.pressed) {
+          cube.velocity.x = -0.05;
+          camera.position.x -= 0.01;
+          camera.position.y += 0.01;
+          camera.position.z -= 0.01;
+        } else if (keys.d.pressed) {
+          cube.velocity.x = 0.05;
+          camera.position.x += 0.01;
+          camera.position.y -= 0.01;
+          camera.position.z += 0.01;
+        }
         if (keys.s.pressed) cube.velocity.z = 0.05;
         else if (keys.w.pressed) cube.velocity.z = -0.05;
 
